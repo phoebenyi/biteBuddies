@@ -1,0 +1,48 @@
+services:
+  account_service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.account
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/?retryWrites=true&w=majority
+    networks:
+      - bitebuddies_network
+
+  availability_service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.availability
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/?retryWrites=true&w=majority
+    networks:
+      - bitebuddies_network
+
+  restaurant_service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.restaurant
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/?retryWrites=true&w=majority
+    networks:
+      - bitebuddies_network
+
+  find_meeting_service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.find_meeting
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/?retryWrites=true&w=majority
+    networks:
+      - bitebuddies_network
+
+networks:
+  bitebuddies_network:
+    driver: bridge 

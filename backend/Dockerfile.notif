@@ -1,0 +1,22 @@
+# Use official Python image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install required system dependencies
+RUN apt-get update && apt-get install -y gcc
+
+# Copy requirement file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir pytz
+
+# Copy all source files
+COPY notif_service.py .
+
+# Expose port for FastAPI
+EXPOSE 8004
+
+# Command to run the FastAPI server
+CMD ["uvicorn", "notif_service:app", "--host", "0.0.0.0", "--port", "8004"]

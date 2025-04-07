@@ -1,0 +1,1906 @@
+openapi: 3.0.0
+info:
+  title: BiteBuddies API
+  description: API documentation for BiteBuddies application services
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Account Service
+  - url: http://localhost:5001
+    description: Availability Service
+  - url: http://localhost:5002
+    description: Restaurant Service
+  - url: http://localhost:5006
+    description: Transcription Service
+  - url: http://localhost:5007
+    description: Chatbot Service
+  - url: http://localhost:5010
+    description: Search Service
+
+tags:
+  - name: Account
+    description: User account management operations
+  - name: Availability
+    description: User availability management operations
+  - name: Restaurant
+    description: Restaurant related operations
+  - name: Transcription
+    description: Voice transcription operations
+  - name: Chatbot
+    description: AI conversation operations
+
+paths:
+  # =========== ACCOUNT SERVICE ===========
+  /account:
+    post:
+      tags:
+        - Account
+      summary: Create a new user account
+      description: Register a new user in the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - name
+                - password
+              properties:
+                email:
+                  type: string
+                  description: User's email address
+                name:
+                  type: string
+                  description: User's full name
+                password:
+                  type: string
+                  description: User's password
+                profileInfo:
+                  type: string
+                  description: Additional user profile information
+                picture:
+                  type: string
+                  description: URL or Base64 of user profile picture
+                given_name:
+                  type: string
+                  description: User's given name
+      responses:
+        "201":
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  data:
+                    type: object
+        "400":
+          description: Bad request - account with this email already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /login:
+    post:
+      tags:
+        - Account
+      summary: User login
+      description: Authenticate user and get account details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - password
+              properties:
+                name:
+                  type: string
+                  description: User's name
+                password:
+                  type: string
+                  description: User's password
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /account/all:
+    get:
+      tags:
+        - Account
+      summary: Get all accounts
+      description: Retrieve a list of all user accounts
+      responses:
+        "200":
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /account/{user_id}:
+    get:
+      tags:
+        - Account
+      summary: Get account by ID
+      description: Retrieve user account details by user ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Account retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+    put:
+      tags:
+        - Account
+      summary: Update account
+      description: Update user account details by user ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                given_name:
+                  type: string
+                profile_info:
+                  type: string
+                picture:
+                  type: string
+      responses:
+        "200":
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /account/email/{email}:
+    get:
+      tags:
+        - Account
+      summary: Get account by email
+      description: Retrieve user account details by email address
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email address
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Account retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+    put:
+      tags:
+        - Account
+      summary: Update account by email
+      description: Update user account details by email address
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email address
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                given_name:
+                  type: string
+                profile_info:
+                  type: string
+                picture:
+                  type: string
+      responses:
+        "200":
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /auth/linkedin:
+    post:
+      tags:
+        - Account
+      summary: LinkedIn authentication
+      description: Authenticate or register a user with LinkedIn credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - name
+              properties:
+                email:
+                  type: string
+                  description: User's email address from LinkedIn
+                name:
+                  type: string
+                  description: User's name from LinkedIn
+                picture:
+                  type: string
+                  description: User's profile picture URL from LinkedIn
+      responses:
+        "200":
+          description: LinkedIn account linked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "201":
+          description: New account created with LinkedIn
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  data:
+                    type: object
+                  message:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  # =========== AVAILABILITY SERVICE ===========
+  /test-db:
+    get:
+      tags:
+        - Availability
+      summary: Test database connection
+      description: Check if the MongoDB connection is working
+      responses:
+        "200":
+          description: Database connection is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  message:
+                    type: string
+                    example: "Database is working"
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Database connection error"
+
+  /availability/{user_email}:
+    get:
+      tags:
+        - Availability
+      summary: Get all availability slots
+      description: Retrieve all availability slots for a user
+      parameters:
+        - name: user_email
+          in: path
+          required: true
+          description: User's email address
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of availability slots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Availability"
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/{user_email}/{date}:
+    get:
+      tags:
+        - Availability
+      summary: Get availability by date
+      description: Retrieve availability slots for a user on a specific date
+      parameters:
+        - name: user_email
+          in: path
+          required: true
+          description: User's email address
+          schema:
+            type: string
+        - name: date
+          in: path
+          required: true
+          description: Date in YYYY-MM-DD format
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of availability slots for the specified date
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Availability"
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/dates/{user_email}:
+    get:
+      tags:
+        - Availability
+      summary: Get available dates
+      description: Retrieve all dates for which a user has availability slots
+      parameters:
+        - name: user_email
+          in: path
+          required: true
+          description: User's email address
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of dates with availability slots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      dates:
+                        type: array
+                        items:
+                          type: string
+                          format: date
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability:
+    post:
+      tags:
+        - Availability
+      summary: Create availability slot
+      description: Create a new availability slot for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_email
+                - date
+                - start_time
+                - end_time
+                - restaurant
+              properties:
+                user_email:
+                  type: string
+                  description: User's email address
+                date:
+                  type: string
+                  format: date
+                  description: Date in YYYY-MM-DD format
+                start_time:
+                  type: string
+                  description: Start time in HH:MM format
+                end_time:
+                  type: string
+                  description: End time in HH:MM format
+                restaurant:
+                  type: string
+                  description: Restaurant identifier
+                status:
+                  type: string
+                  description: Availability status
+                  default: available
+      responses:
+        "201":
+          description: Availability slot created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  data:
+                    $ref: "#/components/schemas/Availability"
+        "400":
+          description: Bad request - missing required fields or invalid date/time format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/delete:
+    post:
+      tags:
+        - Availability
+      summary: Delete availability slot
+      description: Delete an availability slot for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_email
+                - date
+                - start_time
+              properties:
+                user_email:
+                  type: string
+                  description: User's email address
+                date:
+                  type: string
+                  format: date
+                  description: Date in YYYY-MM-DD format
+                start_time:
+                  type: string
+                  description: Start time in HH:MM format
+      responses:
+        "200":
+          description: Slot deleted or no matching slot found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+        "400":
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/search:
+    post:
+      tags:
+        - Availability
+      summary: Search availability slots
+      description: Search for availability slots matching specific criteria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - start_time
+                - end_time
+                - date
+                - restaurant
+                - status
+              properties:
+                start_time:
+                  type: string
+                  description: Start time in HH:MM format
+                end_time:
+                  type: string
+                  description: End time in HH:MM format
+                date:
+                  type: string
+                  format: date
+                  description: Date in YYYY-MM-DD format
+                restaurant:
+                  type: string
+                  description: Restaurant identifier
+                status:
+                  type: string
+                  description: Availability status
+      responses:
+        "200":
+          description: List of matching availability slots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      matches:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Availability"
+        "400":
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/check:
+    post:
+      tags:
+        - Availability
+      summary: Check availability
+      description: Check if a user is available at a specific time and location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - date
+                - startTime
+                - endTime
+                - user_email
+                - restaurant
+                - status
+              properties:
+                date:
+                  type: string
+                  format: date
+                  description: Date in YYYY-MM-DD format
+                startTime:
+                  type: string
+                  description: Start time in HH:MM format
+                endTime:
+                  type: string
+                  description: End time in HH:MM format
+                user_email:
+                  type: string
+                  description: User's email address
+                restaurant:
+                  type: string
+                  description: Restaurant identifier
+                status:
+                  type: string
+                  description: Availability status to check for
+      responses:
+        "200":
+          description: Availability check result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  available:
+                    type: boolean
+                  data:
+                    type: object
+        "400":
+          description: Bad request - missing fields or invalid date/time format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /availability/update_status:
+    post:
+      tags:
+        - Availability
+      summary: Update availability status
+      description: Update the status of an availability slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_email
+                - date
+                - startTime
+                - endTime
+                - restaurant
+                - status
+              properties:
+                user_email:
+                  type: string
+                  description: User's email address
+                date:
+                  type: string
+                  format: date
+                  description: Date in YYYY-MM-DD format
+                startTime:
+                  type: string
+                  description: Start time in HH:MM format
+                endTime:
+                  type: string
+                  description: End time in HH:MM format
+                restaurant:
+                  type: string
+                  description: Restaurant identifier
+                status:
+                  type: string
+                  description: New availability status
+      responses:
+        "200":
+          description: Status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Availability"
+        "400":
+          description: Bad request - missing fields, invalid date/time format, or slot not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Database connection error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  # =========== RESTAURANT SERVICE ===========
+  /restaurants:
+    get:
+      tags:
+        - Restaurant
+      summary: Get restaurants by region
+      description: Retrieve a list of restaurants in a specific region
+      parameters:
+        - name: region
+          in: query
+          required: true
+          description: Region name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of restaurants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          description: Bad request - missing region parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+        - Restaurant
+      summary: Add a new restaurant
+      description: Create a new restaurant entry in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - address
+                - region
+                - latitude
+                - longitude
+              properties:
+                name:
+                  type: string
+                  description: Restaurant name
+                address:
+                  type: string
+                  description: Restaurant address
+                region:
+                  type: string
+                  description: Region where restaurant is located
+                latitude:
+                  type: number
+                  description: Latitude coordinate
+                longitude:
+                  type: number
+                  description: Longitude coordinate
+                cuisine:
+                  type: string
+                  description: Type of cuisine
+                price_range:
+                  type: string
+                  description: Price range (low, medium, high)
+      responses:
+        "201":
+          description: Restaurant added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  id:
+                    type: string
+        "400":
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /restaurant/id:
+    get:
+      tags:
+        - Restaurant
+      summary: Get restaurant ID by name
+      description: Retrieve a restaurant's ID using its name
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: Restaurant name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Restaurant ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        "400":
+          description: Bad request - missing name parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: Restaurant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /restaurants/all:
+    get:
+      tags:
+        - Restaurant
+      summary: Get all restaurants
+      description: Retrieve a list of all restaurants in the database
+      responses:
+        "200":
+          description: List of all restaurants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+  /restaurants/get_by_name:
+    post:
+      tags:
+        - Restaurant
+      summary: Get restaurant by name
+      description: Retrieve restaurant details using its name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Restaurant name
+      responses:
+        "200":
+          description: Restaurant details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+        "400":
+          description: Bad request - missing restaurant name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: Restaurant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /restaurants/nearby:
+    post:
+      tags:
+        - Restaurant
+      summary: Get nearby restaurants
+      description: Find restaurants within a specified radius from a location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - latitude
+                - longitude
+              properties:
+                latitude:
+                  type: number
+                  description: Latitude coordinate
+                longitude:
+                  type: number
+                  description: Longitude coordinate
+                radius_km:
+                  type: number
+                  description: Search radius in kilometers
+                  default: 2.0
+      responses:
+        "200":
+          description: List of nearby restaurants
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  count:
+                    type: integer
+                  radius_km:
+                    type: number
+        "400":
+          description: Bad request - missing latitude or longitude
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  error:
+                    type: string
+
+  /restaurants/sample_data:
+    get:
+      tags:
+        - Restaurant
+      summary: Add sample restaurant data
+      description: Add sample restaurant data to the database for testing
+      responses:
+        "200":
+          description: Sample data status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                  restaurant_ids:
+                    type: array
+                    items:
+                      type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  error:
+                    type: string
+
+  # =========== TRANSCRIPTION SERVICE ===========
+  /transcriptions:
+    get:
+      tags:
+        - Transcription
+      summary: Get transcriptions
+      description: Retrieve a list of transcriptions for a user
+      responses:
+        "200":
+          description: List of transcriptions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      transcriptions:
+                        type: array
+                        items:
+                          type: object
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /upload:
+    post:
+      tags:
+        - Transcription
+      summary: Upload audio for transcription
+      description: Upload an audio file and get a text transcription
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - audio
+              properties:
+                audio:
+                  type: string
+                  format: binary
+                  description: Audio file to transcribe
+                moduleId:
+                  type: string
+                  description: Module identifier
+                userEmail:
+                  type: string
+                  description: User's email address
+      responses:
+        "200":
+          description: Transcription result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      transcription:
+                        type: string
+                      transcription_id:
+                        type: string
+                      file_path:
+                        type: string
+                      db_saved:
+                        type: boolean
+                      questions:
+                        type: array
+                        items:
+                          type: object
+        "400":
+          description: Bad request - no audio file uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "404":
+          description: No speech detected in audio
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /question:
+    get:
+      tags:
+        - Transcription
+      summary: Get personalized questions
+      description: Generate personalized questions for users based on profiles
+      parameters:
+        - name: userEmail
+          in: query
+          required: true
+          description: User's email address
+          schema:
+            type: string
+        - name: meetingId
+          in: query
+          required: true
+          description: Meeting identifier
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of personalized questions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  questions:
+                    type: array
+                    items:
+                      type: object
+        "400":
+          description: Bad request - missing parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "404":
+          description: Meeting or profile not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  # =========== CHATBOT SERVICE ===========
+  /generate-questions:
+    post:
+      tags:
+        - Chatbot
+      summary: Generate personalized questions
+      description: Generate personalized questions for users based on profiles and transcriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - profile_info
+              properties:
+                transcription:
+                  type: string
+                  description: Transcribed conversation text
+                profile_info:
+                  type: string
+                  description: User profile information
+      responses:
+        "200":
+          description: Generated questions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        text:
+                          type: string
+                        for_user:
+                          type: integer
+        "400":
+          description: Bad request - missing required information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /generate-flashcards:
+    post:
+      tags:
+        - Chatbot
+      summary: Generate flashcard questions
+      description: Generate flashcard questions based on transcribed conversations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - transcription
+              properties:
+                transcription:
+                  type: string
+                  description: Transcribed conversation text
+                num_questions:
+                  type: integer
+                  description: Number of questions to generate
+                  default: 10
+      responses:
+        "200":
+          description: Generated flashcard questions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        text:
+                          type: string
+        "400":
+          description: Bad request - missing required information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+
+  /health:
+    get:
+      tags:
+        - Chatbot
+      summary: Service health check
+      description: Check if the chatbot service is running and properly configured
+      responses:
+        "200":
+          description: Service status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "up"
+                  service:
+                    type: string
+                    example: "gemini-service"
+                  gemini_api:
+                    type: string
+                    example: "configured"
+        "500":
+          description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  error:
+                    type: string
+
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Account unique identifier
+        email:
+          type: string
+          description: User's email address
+        name:
+          type: string
+          description: User's full name
+        given_name:
+          type: string
+          description: User's given name
+        password:
+          type: string
+          description: User's password (hashed in a real system)
+        profile_info:
+          type: string
+          description: Additional user profile information
+        picture:
+          type: string
+          description: URL or Base64 of user profile picture
+        authMethods:
+          type: array
+          items:
+            type: string
+          description: Authentication methods used by this account
+
+    Availability:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Availability slot unique identifier
+        user_email:
+          type: string
+          description: User's email address
+        date:
+          type: string
+          format: date
+          description: Date in YYYY-MM-DD format
+        start_time:
+          type: string
+          description: Start time in HH:MM format
+        end_time:
+          type: string
+          description: End time in HH:MM format
+        restaurant:
+          type: string
+          description: Restaurant identifier
+        status:
+          type: string
+          description: Availability status (e.g., 'available', 'booked')
+          default: available
+
+    Restaurant:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Restaurant unique identifier
+        name:
+          type: string
+          description: Restaurant name
+        address:
+          type: string
+          description: Restaurant address
+        region:
+          type: string
+          description: Region where restaurant is located
+        latitude:
+          type: number
+          description: Latitude coordinate
+        longitude:
+          type: number
+          description: Longitude coordinate
+        cuisine:
+          type: string
+          description: Type of cuisine
+        price_range:
+          type: string
+          description: Price range (low, medium, high)
+        distance:
+          type: number
+          description: Distance in kilometers (for nearby endpoint)
+
+    Transcription:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Transcription unique identifier
+        said_by:
+          type: string
+          description: User who created the transcription
+        said_for:
+          type: string
+          description: Module identifier
+        content:
+          type: string
+          description: Transcribed text content
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        file_path:
+          type: string
+          description: Path to transcription file
+
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Question identifier
+        text:
+          type: string
+          description: Question text
+        for_user:
+          type: integer
+          description: Indicates which user the question is for (1 or 2)

@@ -1,0 +1,74 @@
+/* global.css */
+
+/* General Styles */
+body {
+    background-color: #FFFFC5 !important;
+    font-family: 'Poppins', sans-serif;
+    color: #140F1F;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0; */
+  }
+  
+  /* Main Container */
+  .container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #FFFFFF;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  /* Typography */
+  h1, h2, h3 {
+    color: #140F1F;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  /* Buttons */
+  button, .button {
+    background-color: #FEDB71 !important;
+    color: #140F1F !important;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  button:hover {
+    background-color: #E5C060 !important;
+  }
+  
+  /* Input Fields */
+  .input {
+    background-color: #FFFFFF;
+    border: 2px solid #FEDB71;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  
+  .input:focus {
+    border-color: #E5C060;
+  }
+  
+  /* Card Style */
+  .card {
+    background-color: #FFFFFF;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  

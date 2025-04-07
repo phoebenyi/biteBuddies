@@ -1,0 +1,305 @@
+services:
+  # Let rabbitmq start first
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - bitebuddies-network
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  account_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.account
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+    networks:
+      - bitebuddies-network
+
+  availability_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.availability
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+    networks:
+      - bitebuddies-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/test-db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  restaurant_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.restaurant
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+    networks:
+      - bitebuddies-network
+
+  find_partners_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.find_partners
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - AVAILABILITY_SERVICE_URL=http://availability_service:5001
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - RESTAURANT_SERVICE_URL=http://restaurant_service:5002
+    networks:
+      - bitebuddies-network
+    depends_on:
+      availability_service:
+        condition: service_healthy
+      account_service:
+        condition: service_started
+      restaurant_service:
+        condition: service_started
+
+  notif_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.notif
+    ports:
+      - "8004:8004"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+      - RABBITMQ_VHOST=/
+    networks:
+      - bitebuddies-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  forwarder_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.forwarder
+    ports:
+      - "8005:8005"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+      - RABBITMQ_VHOST=/
+    networks:
+      - bitebuddies-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  send_request_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.send_request
+    ports:
+      - "8006:8006"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - AVAILABILITY_SERVICE_URL=http://availability_service:5001
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notif_service:8004
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - CALENDAR_SERVICE_URL=http://calendar_service:5012
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - availability_service
+      - notif_service
+      - account_service
+      - calendar_service
+
+  accept_request_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.accept_request
+    ports:
+      - "8007:8007"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - AVAILABILITY_SERVICE_URL=http://availability_service:5001
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notif_service:8004
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - CALENDAR_SERVICE_URL=http://calendar_service:5012
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - availability_service
+      - notif_service
+      - account_service
+      - calendar_service
+
+  search_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.search
+    ports:
+      - "5010:5010"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+    networks:
+      - bitebuddies-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      account_service:
+        condition: service_started
+      restaurant_service:
+        condition: service_started
+    restart: on-failure
+
+  meeting_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.meeting
+    ports:
+      - "8003:8003"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+    networks:
+      - bitebuddies-network
+
+  post_meeting_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.post_meeting
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/firebase_credentials.json
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+    volumes:
+      - ./firebase_credentials.json:/app/firebase_credentials.json
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - meeting_service
+    restart: on-failure
+
+  transcribe_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.transcribe
+    ports:
+      - "5006:5006"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/key.json
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - CHATBOT_SERVICE_URL=http://chatbot_service:5007
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+    volumes:
+      - ./uploads:/app/uploads
+      - ./transcriptions:/app/transcriptions
+      - ./key.json:/app/key.json
+    networks:
+      - bitebuddies-network
+
+  calendar_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.calendar
+    ports:
+      - "5012:5012"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/key.json
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+    volumes:
+      - ./key.json:/app/key.json
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - account_service
+      - meeting_service
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5012/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  chatbot_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatbot
+    ports:
+      - "5007:5007"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - GEMINI_API_KEY=AIzaSyDyyE7VUA9bTirqBfSXUIafszeMjeZ-izs
+    networks:
+      - bitebuddies-network
+
+  composite_chatbot_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.composite_chatbot
+    ports:
+      - "5008:5008"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+      - TRANSCRIBE_SERVICE_URL=http://transcribe_service:5006
+      - CHATBOT_SERVICE_URL=http://chatbot_service:5007
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - account_service
+      - meeting_service
+      - transcribe_service
+      - chatbot_service
+
+  composite_search_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.composite_search
+    ports:
+      - "5015:5015"
+    environment:
+      - MONGODB_URI=mongodb+srv://Barry:Abcd1234@bitebuddies.top4c.mongodb.net/availability_log?retryWrites=true&w=majority&appName=BiteBuddies
+      - SEARCH_SERVICE_URL=http://search_service:5010
+      - ACCOUNT_SERVICE_URL=http://account_service:5000
+      - RESTAURANT_SERVICE_URL=http://restaurant_service:5002
+      - MEETING_SERVICE_URL=http://meeting_service:8003
+    networks:
+      - bitebuddies-network
+    depends_on:
+      - search_service
+      - restaurant_service
+      - meeting_service
+      - account_service
+    restart: on-failure
+
+networks:
+  bitebuddies-network:
+    driver: bridge 

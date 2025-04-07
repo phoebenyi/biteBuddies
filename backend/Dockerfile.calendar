@@ -1,0 +1,24 @@
+# Use official Python image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install required system dependencies
+RUN apt-get update && apt-get install -y gcc curl
+
+# Copy requirement file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir flask flask-cors google-api-python-client google-auth pymongo
+
+# Copy source files
+COPY calendar_service.py .
+COPY config.py .
+COPY key.json .
+
+# Expose port for Flask server
+EXPOSE 5012
+
+# Command to run the Flask server
+CMD ["python", "calendar_service.py"] 

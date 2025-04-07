@@ -1,0 +1,15 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir pika
+
+COPY config.py .
+COPY search_service.py .
+COPY matching_service.py .
+
+EXPOSE 5010
+
+CMD ["python", "search_service.py"] 
