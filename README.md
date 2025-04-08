@@ -1,9 +1,10 @@
 # BiteBuddies
 
 <p align="center">
-<img width="300" alt="logo" src="https://github.com/user-attachments/assets/e8a6d600-0626-4e35-a207-5641527e2a79">
-<img width="450" alt="website" src="https://github.com/user-attachments/assets/a81c1274-165e-434c-88af-971fc5ab5bab">
+<img width="300" alt="website" src="https://github.com/user-attachments/assets/a56330b4-f064-4f29-89b6-1a8f8b6c8153">
+<img width="450" alt="logo" src="https://github.com/user-attachments/assets/f852eebb-2e78-4a4b-a6cc-9b8feb4a50c1">
 </p>
+
 
 Meal sharing with Strangers at your convenience.​
 
@@ -28,21 +29,19 @@ People are feeling increasingly disconnected in their daily lives, and mealtimes
 
 ## Technical Overview Diagram (SOA Architecture)
 <p align="center">
-<img width="700" alt="SOA" src="https://github.com/user-attachments/assets/633dee87-169b-4dce-a273-298f69da3f8a">
-
+<img width="700" alt="SOA" src="https://github.com/user-attachments/assets/50edcd41-8946-43cc-bd56-9fdcbbcbb80c">
 </p>
 
 ## Technnology Stack Overview
 <p align="center">
-<img width="700" alt="techstack" src="https://github.com/user-attachments/assets/b8f47959-4a4d-4984-a007-38ee6f4d6ae0">
-
+<img width="700" alt="techstack" src="https://github.com/user-attachments/assets/91c29f60-fffd-47aa-891d-a342df6a61c4">
 </p>
 
 ## Frameworks and Databases Utilised
 <p align="center"><strong>Microservices and UI</strong></p>
 <p align="center">
 <a href="https://vitejs.dev/"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg" alt="Vite" height="40"/></a>&nbsp;&nbsp;
-<a href="https://vuejs.org/"><img src="https://github.com/user-attachments/assets/e970a864-1d05-4e23-9129-4a41b789cdef" alt="Vue" height="40"/></a>&nbsp;&nbsp;
+<a href="https://vuejs.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue" height="40"/></a>&nbsp;&nbsp;
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" height="40"/></a>&nbsp;&nbsp;
 <a href="https://tailwindcss.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind" height="30"/></a>&nbsp;&nbsp;
 <a href="https://www.python.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" alt="Python" height="40"/></a>&nbsp;&nbsp;
@@ -53,34 +52,30 @@ People are feeling increasingly disconnected in their daily lives, and mealtimes
 </p>
 <br>
 
-
-
 <p align="center"><strong>Low Code Platform</strong></p>
 <p align="center">
-<a href="https://www.outsystems.com/"><img src="https://github.com/user-attachments/assets/63536012-4ddf-48f1-aaf3-512c65dcf354" alt="outsystems" width="100"/></a>
+<a href="https://www.outsystems.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/OS-logo-color_500x108.png" alt="outsystems" width="100"/></a>
 <br>
 <i>outsystems</i>
 </p>
 <br> 
 
-
 <p align="center"><strong>External API</strong></p>  
 <p align="center">
-<a href="https://gemini.google.com/"><img src="https://github.com/user-attachments/assets/7e7e253a-0b4f-40b9-ba05-94420c3c4db5" alt="Gemini" height="40"/></a>&nbsp;&nbsp;
-<a href="https://cxcli.xavidop.me/stt/"><img src="https://github.com/user-attachments/assets/da4e7852-b18c-4fae-9523-1062efc90d9a" alt="Dialogflow" height="40"/></a>&nbsp;&nbsp;
-<a href="https://calendar.google.com/calendar"><img src="https://github.com/user-attachments/assets/d2cc8ee7-afaa-4aac-b69e-3c88702ff276" alt="Google Calendar" height="40"/></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/"><img src="https://github.com/user-attachments/assets/5e32a39d-2c95-45af-a89c-905753d41123" alt="LinkedIn" height="40" /></a>&nbsp;&nbsp;
+<a href="https://gemini.google.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" alt="Gemini" height="40"/></a>&nbsp;&nbsp;
+<a href="https://cxcli.xavidop.me/stt/"><img src="https://github.com/user-attachments/assets/a3d4d0f6-2e59-4607-82c6-b69c5a55aad4" alt="Dialogflow" height="40"/></a>&nbsp;&nbsp;
+<a href="https://calendar.google.com/calendar"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg" alt="Google Calendar" height="40"/></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Linkedin-logo-blue-In-square-40px.png" alt="LinkedIn" height="40" /></a>&nbsp;&nbsp;
 <br>
 <i>Gemini · Dialogflow · Google Calendar · LinkedIn</i>
 </p>
 <br>
 
-
 <p align="center"><strong>Storage Solutions</strong></p>  
 <p align="center">
 <a href="https://firebase.google.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Firebase_Logo.svg" alt="Firebase" height="40"/></a>&nbsp;&nbsp;
 <a href="https://cloud.google.com/storage/"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud Storage" height="30"/></a>&nbsp;&nbsp;
-<a href="https://www.mongodb.com/"><img src="https://github.com/user-attachments/assets/7e0fabe7-62b3-4f77-89b6-076cb7c92792" alt="MongoDB" height="55" /></a>&nbsp;&nbsp;
+<a href="https://www.mongodb.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Mongodb-icon.svg" alt="MongoDB" height="55" /></a>&nbsp;&nbsp;
 <br>
 <i>Firebase · Google Cloud Storage · MongoDB</i>
 </p>
@@ -88,7 +83,7 @@ People are feeling increasingly disconnected in their daily lives, and mealtimes
 
 <p align="center"><strong>Message Brokers</strong></p>
 <p align="center">
-<a href="https://www.rabbitmq.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/RabbitMQ_logo.svg/2560px-RabbitMQ_logo.svg.png" alt="RabbitMQ" width="100"/></a>
+<a href="https://www.rabbitmq.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/RabbitMQ_logo.svg" alt="RabbitMQ" width="100"/></a>
 <br>
 <i>rabbitMQ</i>
 </p>
@@ -104,7 +99,7 @@ People are feeling increasingly disconnected in their daily lives, and mealtimes
 
 <p align="center"><strong>Deployment & Containerization</strong></p>
 <p align="center">
-<a href="https://github.com/"><img src="https://github.com/user-attachments/assets/1c4e5a9e-8a63-447b-bc3c-c4a357b5dc51" alt="GitHub" height="60"/></a>&nbsp;&nbsp;
+<a href="https://github.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" height="60"/></a>&nbsp;&nbsp;
 <a href="https://www.docker.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" alt="Docker" height="30"/></a>&nbsp;&nbsp;
 </p>
 <p align="center">
@@ -128,12 +123,12 @@ People are feeling increasingly disconnected in their daily lives, and mealtimes
             <th>Lucas</th>
         </tr>
         <tr>
-          <td><img src="https://github.com/user-attachments/assets/f201e27e-a115-4f92-8674-7b778240ee2d" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
-          <td><img src="https://github.com/user-attachments/assets/1c76e44d-3061-4106-9cf9-a7f39635e940" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
-          <td><img src="https://github.com/user-attachments/assets/6abe907b-9244-4e58-a5a7-b9bfc977f47b" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
-          <td><img src="https://github.com/user-attachments/assets/4d75885d-cc85-4f54-8a80-50da1d00147e" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
-          <td><img src="https://github.com/user-attachments/assets/81da3ae0-13e2-429e-9efa-c86f60798717" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
-          <td><img src="https://github.com/user-attachments/assets/1fac8ef7-980a-4dde-a6d5-6cbc3fda8b91" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/da63657c-3207-49e0-9d9c-6ec57f08bdd0" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/1d7a30a4-aa60-43bd-a1b4-f6bccb711276" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/f3d73967-9752-4559-9c3a-5dfe997b12d5" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/2f31b277-2b58-4e8c-ad65-2bbeea41fd44" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/f69e61c2-9ca4-4704-bc78-536adf515ec8" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
+          <td><img src="https://github.com/user-attachments/assets/498669bd-49d4-4dfd-a9d1-8f68e7512efe" alt="name" width="120" height="120" style="display:block; margin: 0 auto;"></td>
         </tr>
         <tr>
           <td><a href="https://www.linkedin.com/in/shaungohyongsee/" target="_blank">LinkedIn</a></td>
